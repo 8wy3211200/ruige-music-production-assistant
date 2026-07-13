@@ -1,13 +1,17 @@
-# Studio One 输入输出路由与返听
+# Studio One / Fender Studio Pro 输入输出路由与返听
+
+> 版本边界：资料来源是 `Fender Studio Pro 8`。旧版 Studio One 使用 Song（歌曲）体系，Fender Studio Pro 8 使用 Session（会话）体系。用户版本未知时不要把 `Session` 菜单写成所有 Studio One 都有，也不要自动改写用户的产品名称。
+>
+> 回答边界：只给用户当前需要的操作，不说“根据知识库”，不说明检索过程或资料名称。
 
 ## 这是什么
 - 这页解决的是“声卡通道怎么进宿主、耳机返听怎么单独做、为什么主监听和歌手耳机要分开、为什么返听有效果但录进去不想被写死”。
-- Studio One 的 `Audio I/O Setup` 是按 `Session` 单独保存的，不同工程可以有不同路由。这既是优点，也是很多人中途改路由后把工程弄乱的原因。
+- `Audio I/O Setup` 按当前 Song 或 Session 单独保存，不同工程可以有不同路由。这既是优点，也是中途改路由后容易混乱的原因。
 - 用户常见问题基本都集中在三块：`输入输出矩阵没配对`、`Cue Mix 不会独立`、`把监听效果直接录死了`。
 
 ## 怎么操作
-- 进入位置：新建或打开 Session 后，去 `Session/Session Setup/Audio I/O Setup`。
-- `Audio I/O Setup` 分为 `Inputs` 和 `Outputs` 两页。纵列是硬件 I/O，横行是 Studio Pro 里创建的软件 I/O 通道。
+- 版本明确后再给完整菜单：旧版 Studio One 通常从 `Song > Song Setup > Audio I/O Setup` 进入；Fender Studio Pro 8 从 `Session > Session Setup > Audio I/O Setup` 进入。版本未知时只让用户打开当前工程的 `Audio I/O Setup`，或请他提供版本/截图。
+- `Audio I/O Setup` 分为 `Inputs` 和 `Outputs` 两页。纵列是硬件 I/O，横行是宿主中创建的软件 I/O 通道。
 - 新增输入或输出：
   - 直接用 `Add (Mono)` 或 `Add (Stereo)` 快速加。
   - 需要更细控制时用 `Add...`，可以自定义 `Label`、`Format`、`Color`，也能一次建多个通道。

@@ -1,14 +1,19 @@
-# Studio One 音频设备与Buffer
+# Studio One / Fender Studio Pro 音频设备与 Buffer
+
+> 版本边界：资料来源是 `Fender Studio Pro 8`。用户只说“Studio One”但没有版本号或截图时，沿用用户称呼，不自动改名，也不直接套用 Studio Pro 8 的完整菜单路径。
+>
+> 回答边界：只给用户当前需要的操作，不说“根据知识库”，不说明检索过程或资料名称。
 
 ## 这是什么
 - 这页管的是 `Audio Device`、`Device Buffer Size`、Windows 下的 `Internal Buffer Size`、`Dropout Protection`、`Low-Latency Monitoring`、`Sample Rate` 和当前总延迟。
-- 用户最常见的问题不是“不会录”，而是录音时延迟大、一降 buffer 就爆音，或者工程一重就卡。
+- 这页主要处理录音延迟、Buffer、工程稳定性和音频设备选择。
 - 在 Studio One 这套逻辑里，`设备缓冲` 和 `处理缓冲` 不是一回事。只会死降 buffer，通常会把问题越调越糟。
 
 ## 怎么操作
-- 进入位置：`Studio Pro/Options/Audio Setup`。开始页也可以点 `Configure Audio Device`。
-- 先选对设备：Studio Pro 会从系统已安装设备里自动选一个音频设备。排查没声或延迟异常时，先确认不是又切回了板载声卡。
-- `Control Panel`：如果你的声卡驱动自带控制面板，优先在驱动面板确认采样率、时钟和缓冲，再回 Studio Pro 看宿主显示是否一致。
+- 版本已经明确时再给菜单：Windows 旧版 Studio One 通常从 `Studio One > Options > Audio Setup` 进入；macOS 通常从 `Studio One > Preferences > Audio Setup` 进入；Fender Studio Pro 8 再使用对应版本的 `Studio Pro > Options > Audio Setup`。开始页一般也可以点 `Configure Audio Device`。版本未知时先说“打开音频设置”，不要编造完整菜单。
+- 工程回放没有声音、当前不在录音时，不先猜音频设备。先播放已有音频，按 `F3` 打开 Console，观察 Main Out 是否有电平：有电平再检查音频设备和物理输出；没有电平先查宿主内部路由。
+- 需要检查设备时，再确认当前选的是用户实际使用的声卡，而不是板载声卡或其他驱动。
+- `Control Panel`：如果声卡驱动自带控制面板，在驱动面板确认采样率、时钟和缓冲，再回宿主看显示是否一致。
 - `Device Buffer Size`：录音、弹软音源、实时监听时，从低值开始往上试。官方建议就是选“最低但仍能稳定工作”的 buffer。
 - Windows 的 `Internal Buffer Size`：默认用 `Lock` 跟随 `Device Buffer Size`。如果你不确定，不要手动拆开；官方明确建议拿不准就保持锁定。带 DSP 的外置方案更建议保持锁定。
 - `Dropout Protection`：这会改变 `Process Buffer Size`，让大工程回放和插件处理更稳定。想兼顾大工程稳定和低监听延迟，不要只调 `Device Buffer Size`，而要配合 `Dropout Protection`。
