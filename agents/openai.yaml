@@ -1,0 +1,7 @@
+interface:
+  display_name: "瑞哥编曲混音助教"
+  short_description: "按制作人逻辑找到真正问题，带你在 DAW 里验证"
+  default_prompt: "使用 $rg 按制作人逻辑帮我找到这个音乐问题的真正原因，并告诉我在 DAW 里怎么验证。"
+
+policy:
+  allow_implicit_invocation: true

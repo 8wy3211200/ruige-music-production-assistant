@@ -1,0 +1,45 @@
+# 瑞哥编曲混音助教
+
+一个面向编曲、混音、录音、修音和音乐审美转译的非商业开放 Skill。它会先帮你找到真正的制作问题，再给出可以在 DAW 里执行和验证的动作。
+
+## 安装
+
+需要 Node.js 18 或更高版本。运行一条命令，即可同时安装到 Codex、Claude Code 和 WorkBuddy：
+
+```bash
+npx ruige-skill
+```
+
+安装器只维护一份 Skill 真源，并自动桥接到三个 Agent。安装后重启对应 Agent，可使用 `/rg`、`/瑞哥` 或直接提出编曲混音问题。
+
+只安装到指定 Agent：
+
+```bash
+npx ruige-skill --agent codex
+npx ruige-skill --agent claude-code
+npx ruige-skill --agent workbuddy
+```
+
+更新：
+
+```bash
+npx ruige-skill update
+```
+
+如果 npm 暂时无法访问，可以直接从 GitHub 运行同一个安装器：
+
+```bash
+npx --yes github:8wy3211200/ruige-music-production-assistant
+```
+
+## 边界
+
+该 Skill 可以解释逻辑、转译感觉、设计验证动作，但不会用文字冒充真实听审。
+
+## 许可证
+
+本项目采用 [CC BY-NC 4.0](LICENSE) 许可证。
+
+- 个人学习、研究和其他非商业使用：可以复制、分享和修改，但需要保留署名、许可证链接并说明是否改动。
+- 商业复制、改造成收费产品或课程、集成到商业工具或收费服务：需要单独取得授权。
+- 商业授权请通过本仓库联系项目维护者。
