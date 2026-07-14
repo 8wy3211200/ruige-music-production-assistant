@@ -1,7 +1,7 @@
 interface:
   display_name: "瑞哥音乐助教"
-  short_description: "理清编曲混音问题，也陪你讨论音乐职业与变现路径"
-  default_prompt: "使用 $rg 帮我把这个音乐问题或职业迷茫梳理清楚，并给出下一步验证。"
+  short_description: "理清编曲混音问题，带你听懂效果，也讨论音乐职业路径"
+  default_prompt: "使用 $rg 帮我把这个音乐问题、学习目标或职业迷茫梳理清楚，并给出下一步验证。"
 
 policy:
   allow_implicit_invocation: true

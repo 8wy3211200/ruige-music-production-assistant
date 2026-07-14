@@ -18,9 +18,12 @@ import { fileURLToPath } from "node:url";
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SKILL_NAME = "rg";
 const SUPPORTED_AGENTS = {
-  codex: [".codex", "skills", SKILL_NAME],
-  "claude-code": [".claude", "skills", SKILL_NAME],
-  workbuddy: [".workbuddy", "skills", SKILL_NAME],
+  codex: [[".codex", "skills", SKILL_NAME]],
+  "claude-code": [[".claude", "skills", SKILL_NAME]],
+  workbuddy: [
+    [".workbuddy", "skills", SKILL_NAME],
+    [".codebuddy", "skills", SKILL_NAME],
+  ],
 };
 
 function printHelp() {
@@ -197,10 +200,12 @@ function homeDirectory() {
 }
 
 function installPaths(home, agents) {
-  return agents.map((agent) => ({
-    agent,
-    target: join(home, ...SUPPORTED_AGENTS[agent]),
-  }));
+  return agents.flatMap((agent) =>
+    SUPPORTED_AGENTS[agent].map((parts) => ({
+      agent,
+      target: join(home, ...parts),
+    })),
+  );
 }
 
 async function showStatus(home, agents) {
