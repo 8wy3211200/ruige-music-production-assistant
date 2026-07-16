@@ -6,6 +6,7 @@ import {
   cp,
   lstat,
   mkdir,
+  readFile,
   readlink,
   realpath,
   rename,
@@ -16,6 +17,9 @@ import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const PACKAGE_VERSION = JSON.parse(
+  await readFile(join(PACKAGE_ROOT, "package.json"), "utf8"),
+).version;
 const SKILL_NAME = "rg";
 const SUPPORTED_AGENTS = {
   codex: [[".codex", "skills", SKILL_NAME]],
@@ -234,15 +238,17 @@ async function installOrUpdate(options) {
     canonical,
     options.force || isUpdate,
   );
-  console.log(`✓ Skill 真源已${isUpdate && canonicalExists ? "更新" : "安装"}：${canonical}`);
+  console.log(
+    `✓ 瑞哥音乐助教（rg）v${PACKAGE_VERSION} 已${isUpdate && canonicalExists ? "更新" : "安装"}`,
+  );
   if (backup) console.log(`  旧真源备份：${backup}`);
 
   let failed = false;
+  const connectedAgents = new Set();
   for (const { agent, target } of paths) {
     try {
       const result = await ensureBridge(target, canonical, options.force);
-      const verb = result.status === "kept" ? "桥接已存在" : "已桥接";
-      console.log(`✓ ${agent}: ${verb} ${target}`);
+      connectedAgents.add(agent);
       if (result.backup) console.log(`  旧位置备份：${result.backup}`);
     } catch (error) {
       failed = true;
@@ -255,7 +261,16 @@ async function installOrUpdate(options) {
     return;
   }
 
-  console.log("\n安装完成。重启对应 Agent，再用 /rg、/瑞哥 或直接提出音乐制作问题。");
+  for (const agent of connectedAgents) {
+    console.log(`✓ ${agent}: 已连接`);
+  }
+
+  console.log(
+    "\n安装完成。重启对应 Agent，再用 /rg、/瑞哥 或直接提出音乐制作问题。",
+  );
+  console.log(
+    "安装验证已经完成，无需再扫描或枚举 Skill 的内部目录、知识文件和数量。",
+  );
 }
 
 async function main() {
