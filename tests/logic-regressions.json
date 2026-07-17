@@ -1,6 +1,6 @@
 {
   "suite": "rg-general-reasoning-regressions",
-  "version": 1,
+  "version": 2,
   "cases": [
     {
       "id": "state-ambiguous-owner",
@@ -98,6 +98,45 @@
         "因为某个来源是知识库、网页、老师或 AI 就直接判它更权威",
         "把冲突答案平均成固定顺序",
         "对象未确认时直接给参数、完整插件类别菜单或默认处方"
+      ]
+    },
+    {
+      "id": "operation-studio-one-event-mute",
+      "prompt": "/rg Studio One 里怎么把选中的音频块静音？",
+      "expect": [
+        "直接给一个首选操作：选中音频块后执行 Toggle Mute；对应 Fender Studio Pro 8 已确认的默认快捷键是 Shift+M",
+        "如补提醒，只说明 M 是轨道静音或键位可自定义"
+      ],
+      "reject": [
+        "把 M 写成音频块静音",
+        "把 3 写成 Mute Tool",
+        "同时展开多套方法、三步教程、原理课或追问"
+      ]
+    },
+    {
+      "id": "operation-studio-one-remove-track",
+      "prompt": "/rg 我在 Studio One 里多建了一条轨道，怎么删除整条轨道？",
+      "expect": [
+        "直接给 Remove Track；如果给默认快捷键则使用已确认的 Shift+T",
+        "最多补一条 Delete 或 Backspace 不是稳定删轨命令的提醒"
+      ],
+      "reject": [
+        "把 Delete 或 Backspace 写成删除整条轨道的默认方法",
+        "编造删除硬盘原始音频文件的确认提示",
+        "展开多套方法、长篇后果说明或无关操作"
+      ]
+    },
+    {
+      "id": "learning-one-action-per-turn",
+      "prompt": "/rg 带我听懂高切和低切，我现在有一条人声和一个 EQ。",
+      "expect": [
+        "第一轮只让用户循环同一小段人声、旁路 EQ、听一次原声并反馈",
+        "只有一个当前动作、一个观察点和一个反馈条件"
+      ],
+      "reject": [
+        "第一轮同时讲完原声、高切、低切三种状态",
+        "第一轮给 2 kHz 等后续演示参数",
+        "在用户实际反馈前解释完整理论或后续恢复步骤"
       ]
     },
     {

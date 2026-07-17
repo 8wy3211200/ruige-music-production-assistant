@@ -33,9 +33,11 @@
 
 ### 4. 轨道控制
 - `T`：Add Tracks
+- `Shift + T`：Remove Track（移除选中的轨道）
 - `R`：Arm
 - `U`：Monitor
-- `M`：Mute
+- `M`：Mute（轨道静音）
+- `Shift + M`：Toggle Mute（切换选中 Event / 音频块的静音）
 - `S`：Solo
 - `A`：Show Envelopes
 
@@ -56,6 +58,10 @@
   - 正解：例如 `Q` 在 MIDI、音频、事件编辑里的对象不同，但本质都是按当前量化面板工作。
 - 误区：记不住命令就硬猜。
   - 正解：先用 `Ctrl + K` 打开 `Find Command`，很多命令名字一搜就能定位。
+- 误区：选中轨道后按 `Delete / Backspace` 就等于删除轨道。
+  - 正解：删除整条轨道使用 `Remove Track`；`Delete / Backspace` 会按当前焦点删除选中的 Event 或其他对象，不能当作稳定的删轨命令。
+- 误区：把轨道静音和音频块静音当成同一个快捷键。
+  - 正解：`M` 是轨道静音；选中音频块后使用 `Toggle Mute`，Fender Studio Pro 8 默认是 `Shift + M`。默认键位可能被用户改过，异常时搜索命令名确认。
 - 误区：觉得默认键位不顺手，只能忍。
   - 正解：官方快捷键表明确写了可以去 `Options / General / Keyboard Shortcuts` 里改，也能套别的 DAW 模板。
 - 症状：一部分命令和别人教程不一样。
