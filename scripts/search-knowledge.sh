@@ -16,6 +16,16 @@ fi
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 skill_dir=$(cd -- "$script_dir/.." && pwd)
-knowledge_root=$(cd -- "$skill_dir/knowledge" && pwd)
+if [[ -d $skill_dir/knowledge ]]; then
+  knowledge_root=$(cd -- "$skill_dir/knowledge" && pwd)
+else
+  knowledge_root=$(cd -- "$skill_dir/../knowledge" && pwd)
+fi
 
-rg -l -i --glob '*.md' -- "$pattern" "$knowledge_root" | sed -n "1,${limit}p"
+matches=$(rg -l -i --glob '*.md' -- "$pattern" "$knowledge_root" || true)
+if [[ -z $matches ]]; then
+  printf '未找到匹配内容\n'
+  exit 0
+fi
+
+printf '%s\n' "$matches" | sed -n "1,${limit}p"

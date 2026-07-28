@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T03:12:56.459Z",
+  "generatedAt": "2026-07-28T04:01:57.219Z",
   "skill": "rg",
   "knowledgeFiles": 1853,
   "files": [
@@ -506,8 +506,8 @@
     },
     {
       "path": "编曲制作实战问答/07-编曲思维与工作流实战问答.md",
-      "bytes": 33095,
-      "sha256": "2bf71c2e7a626ae01026c21c3356fd210f34260007a5734ddbfb2f9c45f42972"
+      "bytes": 33711,
+      "sha256": "b6a6e03c3566ab07b51dbf22cbc71e751730d0a4c7113c6ed1bb63f3c9502754"
     },
     {
       "path": "公开基础知识.md",

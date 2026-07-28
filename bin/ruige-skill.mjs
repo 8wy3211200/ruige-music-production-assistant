@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
+import { createHash } from "node:crypto";
 import { constants } from "node:fs";
 import {
   access,
   cp,
   lstat,
   mkdir,
+  readdir,
   readFile,
   readlink,
   realpath,
@@ -13,7 +15,7 @@ import {
   symlink,
 } from "node:fs/promises";
 import { homedir } from "node:os";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -163,6 +165,42 @@ async function isBridgeTo(target, canonical) {
   return (await realpath(resolvedTarget)) === (await realpath(canonical));
 }
 
+async function findLegacyBridges(home, agents) {
+  const found = [];
+  const parents = new Map();
+  for (const { agent, target } of installPaths(home, agents)) {
+    parents.set(dirname(target), agent);
+  }
+
+  for (const [parent, agent] of parents) {
+    if (!(await exists(parent))) continue;
+    for (const name of await readdir(parent)) {
+      if (name.startsWith(`${SKILL_NAME}.backup-`)) {
+        found.push({ agent, path: join(parent, name), name });
+      }
+    }
+  }
+  return found;
+}
+
+async function quarantineLegacyBridges(home, agents) {
+  const legacy = await findLegacyBridges(home, agents);
+  if (!legacy.length) return [];
+
+  const quarantine = join(home, ".ruige-skills", "legacy-bridges");
+  await mkdir(quarantine, { recursive: true });
+  const moved = [];
+  for (const item of legacy) {
+    let destination = join(quarantine, `${item.agent}-${item.name}`);
+    if (await exists(destination)) {
+      destination = `${destination}-${timestamp()}`;
+    }
+    await rename(item.path, destination);
+    moved.push({ ...item, destination });
+  }
+  return moved;
+}
+
 async function preflightBridges(paths, canonical, force) {
   if (force) return;
 
@@ -214,11 +252,66 @@ function installPaths(home, agents) {
 
 async function showStatus(home, agents) {
   const canonical = join(home, ".ruige-skills", SKILL_NAME);
-  console.log(`真源：${canonical} (${(await exists(join(canonical, "SKILL.md"))) ? "正常" : "未安装"})`);
+  let canonicalStatus = "未安装";
+  let version = null;
+  if (await exists(join(canonical, "SKILL.md"))) {
+    try {
+      const installedPackage = JSON.parse(
+        await readFile(join(canonical, "package.json"), "utf8"),
+      );
+      const manifest = JSON.parse(
+        await readFile(join(canonical, "manifest.json"), "utf8"),
+      );
+      let manifestValid = (
+        manifest.skill === SKILL_NAME
+        && Array.isArray(manifest.files)
+        && manifest.files.length === manifest.knowledgeFiles
+      );
+      for (const item of manifest.files ?? []) {
+        if (!manifestValid) break;
+        const content = await readFile(
+          join(canonical, "knowledge", item.path),
+        );
+        const digest = createHash("sha256").update(content).digest("hex");
+        if (content.length !== item.bytes || digest !== item.sha256) {
+          manifestValid = false;
+        }
+      }
+      if (
+        installedPackage.name === "ruige-skill"
+        && installedPackage.version
+        && manifestValid
+      ) {
+        canonicalStatus = "正常";
+        version = installedPackage.version;
+      } else {
+        canonicalStatus = "内容不完整";
+      }
+    } catch {
+      canonicalStatus = "内容不完整";
+    }
+  }
+  console.log(
+    `真源：${canonical} (${canonicalStatus}${version ? `，v${version}` : ""})`,
+  );
   for (const { agent, target } of installPaths(home, agents)) {
+    const label = agent === "workbuddy"
+      ? `${agent} (${relative(home, target)})`
+      : agent;
     const info = await pathInfo(target);
-    const detail = info.kind === "link" ? ` -> ${info.target}` : "";
-    console.log(`${agent}: ${info.kind}${detail}`);
+    if (await isBridgeTo(target, canonical)) {
+      console.log(`${label}: 已连接`);
+    } else if (info.kind === "link") {
+      console.log(`${label}: 错误链接 -> ${info.target}`);
+    } else {
+      console.log(`${label}: ${info.kind}`);
+    }
+  }
+  const legacy = await findLegacyBridges(home, agents);
+  if (legacy.length) {
+    console.log(
+      `警告：发现 ${legacy.length} 个可能被重复加载的 rg.backup-* 旧入口；运行 update 可移出 Skill 扫描目录。`,
+    );
   }
 }
 
@@ -231,6 +324,11 @@ async function installOrUpdate(options) {
 
   if (isUpdate && !canonicalExists) {
     console.log("尚未安装，将执行首次安装。\n");
+  }
+
+  const movedLegacy = await quarantineLegacyBridges(home, options.agents);
+  if (movedLegacy.length) {
+    console.log(`✓ 已移出 ${movedLegacy.length} 个可能被重复加载的旧 Skill 入口`);
   }
 
   await preflightBridges(paths, canonical, options.force);
