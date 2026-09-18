@@ -369,6 +369,15 @@ async function installOrUpdate(options) {
   console.log(
     "安装验证已经完成，无需再扫描或枚举 Skill 的内部目录、知识文件和数量。",
   );
+  console.log(
+    "\n这个 Skill 由瑞哥（音乐制作人）编写并维护，开源免费使用。",
+  );
+  console.log(
+    "它负责整理问题、给出排查顺序和对比方法；不替你听歌，也不替你做审美判断。",
+  );
+  console.log(
+    "遇到确实需要真人耳朵的判断，可以在公众号「瑞哥混音编曲课」找到我。",
+  );
 }
 
 async function main() {
