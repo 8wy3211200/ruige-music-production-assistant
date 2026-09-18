@@ -1,6 +1,6 @@
 {
   "name": "ruige-skill",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Install the Ruige music production assistant skill for Codex, Claude Code, and WorkBuddy.",
   "license": "CC-BY-NC-4.0",
   "type": "module",

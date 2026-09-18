@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-17T15:36:07.911Z",
+  "generatedAt": "2026-09-18T04:31:58.177Z",
   "skill": "rg",
   "knowledgeFiles": 1854,
   "files": [
     {
       "path": "AI音乐工作流问答库/01-AI音乐工作流问答库.md",
-      "bytes": 19117,
-      "sha256": "07ae82ba3ca946495fed552efa22f0cf5fdc0c0b66d7ec490608a07b08889c49"
+      "bytes": 20239,
+      "sha256": "f5e1a43bb5d4d248cc34e8c3c42d695deac23ce5f7de41631d5df66e9d22ef82"
     },
     {
       "path": "修音问题答疑库/Auto-Tune和Melodyne的主要区别是什么？.md",
